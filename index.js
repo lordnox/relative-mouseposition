@@ -39,8 +39,8 @@ var baseDirectiveDefinitionObject = {
     };
     scope.move = function(event) {
       var offset = $(element).offset();
-      state.left = event.pageY - offset.top;
-      state.top  = event.pageX - offset.left;
+      state.top  = event.pageY - offset.top;
+      state.left = event.pageX - offset.left;
       broadcast();
     };
   }
