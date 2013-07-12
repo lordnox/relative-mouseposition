@@ -4,7 +4,10 @@
   "description": "Returns the relative mouseposition of an element",
   "version": "0.0.1",
   "keywords": [],
-  "dependencies": {},
+  "dependencies": {
+    "component/jquery": "*",
+    "lordnox/angularjs": "*"
+  },
   "development": {},
   "license": "MIT",
   "main": "index.js",
