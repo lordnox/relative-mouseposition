@@ -12,12 +12,13 @@
 ## API
 
   Usable as Element or Attribute, you need to make sure that the relative parent element
-  has a `position` other than `static`
+  has a `state` other than `static`
 
   ```HTML
   <div ng-app="myApp" ng-controller="myCtrl">
-    <span relative-mouseposition="position"></span>
-    <relative-mouseposition position="position"></relative-mouseposition>
+    <span relative-mouseposition="state"></span>
+    <relative-mouseposition state="state"></relative-mouseposition>
+    <relative-mouseposition event="'myEvent'"></relative-mouseposition>
   </div>
   ```
 
@@ -30,7 +31,10 @@
   ];
   var myApp = angular('myApp', dependencies); // add a dependency
   myApp.controller('myCtrl', ['$scope', function myCrtl($scope) {
-    scope.position = {}; // this will contain the position
+    scope.state = {}; // this will contain the state
+    scope.$on('myEvent', function(event, state) {
+      scope.state = state;
+    })
   }]);
   ```
 
@@ -39,9 +43,13 @@
   For a simple working example just clone this repositiory and start the demo.html in your browser.
   You will actually need to do a `component build` before it will work.
 
+### Evented
+
+  It's a little more code but you are able to use events and not have to
+  use `scope.$watch('state', function(){})` for the same feature.
 
 ## ToDo
-  - [ ] Make it that the element triggers an event when a change occours
+  - [X] Make it that the element triggers an event when a change occours
   - [ ] Learn more about how github really works... and Markdown...
 
 ## License

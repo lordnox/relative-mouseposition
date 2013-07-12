@@ -11,13 +11,37 @@ var app = angular.module(name, dependencies);
 var baseDirectiveDefinitionObject = {
   restrict: 'A',
   replace: true,
-  scope: { position: '=' + name },
-  template: '<div class="relative-mouseposition-anchor" ng-mousemove="hover($event)" ng-mouseover="position.hover=true" ng-mouseleave="position.hover=false"></div>',
+  scope: { state: '=' + name, event: '@' },
+  template: '<div class="relative-mouseposition-anchor" ng-mousemove="move($event)" ng-mouseover="hover(true)" ng-mouseleave="hover(false)"></div>',
   link: function(scope, element) {
-    scope.hover = function(event) {
-      var offset            = $(element).offset();
-      scope.position.top    = event.pageY - offset.top;
-      scope.position.left   = event.pageX - offset.left;
+    var state = {
+          hover : false
+        , left  : 0
+        , top   : 0
+        }
+      , broadcast = function() {
+          // only set this if the model is "assignable"
+          // would like to have a better way of testing this
+          if(scope.state !== undefined) {
+            scope.state = {}
+            scope.state.hover = state.hover;
+            scope.state.left  = state.left;
+            scope.state.top   = state.top;
+          }
+          // broadcast this to the parent, use the provided event-label if possible
+          var event = String(scope.event) || 'mouse-state';
+          scope.$parent.$broadcast(scope.event, state);
+        }
+      ;
+    scope.hover = function(hoverState) {
+      state.hover = hoverState;
+      broadcast();
+    };
+    scope.move = function(event) {
+      var offset = $(element).offset();
+      state.left = event.pageY - offset.top;
+      state.top  = event.pageX - offset.left;
+      broadcast();
     };
   }
 };
@@ -27,9 +51,9 @@ app.directive(name, [function() {
 }]);
 
 app.directive(name, [function() {
-  var directiveDefinitionObject       = angular.copy(baseDirectiveDefinitionObject)
-  directiveDefinitionObject.restrict  = 'E';
-  directiveDefinitionObject.scope     = { position: '=' }
+  var directiveDefinitionObject         = angular.copy(baseDirectiveDefinitionObject);
+  directiveDefinitionObject.restrict    = 'E';
+  directiveDefinitionObject.scope.state = '=';
   return directiveDefinitionObject;
 }]);
 

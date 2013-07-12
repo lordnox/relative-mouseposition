@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Demo Application for relative-mouseposition</title>
+    <title>Demo Application for relative-mousestate</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="build/build.css">
@@ -15,7 +15,7 @@
         width: 100%;
       }
       td {
-        width: 33%;
+        width: 25%;
       }
       .content {
         position: relative;
@@ -25,21 +25,38 @@
         background-color: greenyellow;
       }
     </style>
+    <script>
+      var eventCtrl = function($scope) {
+        $scope.event = 'pos';
+        $scope.state = {
+          attribute: {}
+        //, element: {}
+        , event: {}
+        };
 
+        // for the evented relative-mouseposition
+        $scope.$on($scope.event, function(scope, state) {
+          $scope.state.event = state;
+        });
+      }
+    </script>
   </head>
 
   <body ng-app="relativeMouseposition">
     <div id="page">
-      <table ng-init="position={}">
+      <table ng-controller="eventCtrl" >
         <tr>
-          <td class="content attribute" ng-mouseenter="position.element='Attribute'">
-            <span relative-mouseposition="position"></span>
+          <td class="content attribute" ng-mouseenter="state.td='Attribute'">
+            <span relative-mouseposition="state.attribute"></span>
           </td>
-          <td class="content element" ng-mouseenter="position.element='Element'">
-            <relative-mouseposition position="position"></relative-mouseposition>
+          <td class="content element" ng-mouseenter="state.td='Element'">
+            <relative-mouseposition state="state.element"></relative-mouseposition>
+          </td>
+          <td class="content element" ng-mouseenter="state.td='Event'">
+            <relative-mouseposition event="{{event}}"></relative-mouseposition>
           </td>
           <td class="output">
-            <pre>{{position|json}}</pre>
+            <pre>{{state|json}}</pre>
           </td>
         </tr>
       </table>
