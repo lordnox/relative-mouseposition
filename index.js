@@ -29,8 +29,8 @@ var baseDirectiveDefinitionObject = {
             scope.state.top   = state.top;
           }
           // broadcast this to the parent, use the provided event-label if possible
-          var event = String(scope.event) || 'mouse-state';
-          scope.$parent.$broadcast(scope.event, state);
+          var event = String(scope.event || 'mouse-state');
+          scope.$parent.$broadcast(event, state);
         }
       ;
     scope.hover = function(hoverState) {
