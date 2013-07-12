@@ -21,8 +21,14 @@
   </div>
   ```
 
+  When you `var rmp = require('relative-mouseposition');` you will get the angular-modules name as
+  a return value `rmp === 'relativeMouseposition'`.
+
   ```javascript
-  var myApp = angular('myApp', ['relativeMouseposition']); // add a dependency
+  var dependencies = [
+    require('relative-mouseposition')
+  ];
+  var myApp = angular('myApp', dependencies); // add a dependency
   myApp.controller('myCtrl', ['$scope', function myCrtl($scope) {
     scope.position = {}; // this will contain the position
   }]);
@@ -31,6 +37,7 @@
 ### Demo.html
 
   For a simple working example just clone this repositiory and start the demo.html in your browser.
+  You will actually need to do a `component build` before it will work.
 
 
 ## ToDo
